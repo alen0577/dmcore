@@ -134,6 +134,18 @@ urlpatterns = [
     path('work_shedule/<int:id>', views.work_shedule, name='work_shedule'),
 
 
+    # ---------------------------------------------------------------------------- data manager section
+
+
+
+
+
+
+
+    # ---------------------------------------------------------------------------- tele caller  section
+
+
+
 
  
 ]

@@ -2893,8 +2893,15 @@ def remove(request):
     return JsonResponse(data)
 
 
+# ------ for data manager module------
 
 
 
+
+
+
+
+
+# ------ for telecaller module-------
 
 

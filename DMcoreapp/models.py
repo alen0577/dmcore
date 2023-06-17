@@ -460,3 +460,17 @@ class addi_events(models.Model):
     label = models.CharField(max_length=255,null=True,blank=True)
     date = models.DateField(null=True,blank=True)
     file =models.ImageField(upload_to='images/smo_post/', null=True, blank=True)
+
+
+
+
+    # ---------------------------------------------------------------------------- data manager models
+
+
+    
+
+
+
+
+
+    # ---------------------------------------------------------------------------- tele caller models
