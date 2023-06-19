@@ -1,4 +1,4 @@
-{%extends 'admin/ad_base.html'%}
+{%extends 'telecaller/tc_base.html'%}
 <!-- DEVprojects -->
 {%load static%}
 {%block content%}
@@ -9,7 +9,7 @@
 
 <div class="row pt-3">
   <div class="" style="font-size: 20px;font-weight: 600;color:#6C7293;">
-    PROJECTS
+    LEADS
   </div>
 </div>
 
@@ -17,13 +17,13 @@
 
     <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card">
-        <a href="{% url 'ad_create_work'%}" class="text-decoration-none text-white ">
+        <a href="{% url 'tc_view_leads'%}" class="text-decoration-none text-white ">
           <div class="card-body">
             <div class="row">
               <div class="col-8 col-sm-12 col-xl-8 my-auto">
                 <div class="d-flex d-sm-block d-md-flex align-items-center">
                   
-                      <h4 class="mb-0" style="color:white;">Create Work</h4>
+                      <h4 class="mb-0" style="color:white;">View Leads</h4>
   
                 </div>
               </div>
@@ -37,35 +37,10 @@
       </div>
     </div>
 
-
-
-
+<!-- 
     <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card">
-        <a href="{% url 'ad_view_work'%}" class="text-decoration-none text-white ">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                <div class="d-flex d-sm-block d-md-flex align-items-center">
-                  
-                      <h4 class="mb-0" style="color:white;">View Work</h4>
-  
-                </div>
-              </div>
-              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                <i class="icon-lg mdi mdi-arrange-send-backward text-primary ms-auto"></i>
-              </div>
-            </div>
-  
-          </div>
-        </a>
-      </div>
-    </div>
-
-
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
-      <div class="card">
-        <a href="{% url 'ad_daily_work_det'%}" class="text-decoration-none text-white ">
+        <a href="{% url 'ex_daily_work_clint'%}" class="text-decoration-none text-white ">
           <div class="card-body">
             <div class="row">
               <div class="col-8 col-sm-12 col-xl-8 my-auto">
@@ -87,38 +62,18 @@
     </div>
 
 
+    
+
+
     <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card">
-        <a href="{% url 'ad_work_analiz_det'%}" class="text-decoration-none text-white ">
+        <a href="{% url 'ex_weekly_rep_clint'%}" class="text-decoration-none text-white ">
           <div class="card-body">
             <div class="row">
               <div class="col-8 col-sm-12 col-xl-8 my-auto">
                 <div class="d-flex d-sm-block d-md-flex align-items-center">
                   
-                      <h4 class="mb-0" style="color:white;">Work Analyze</h4>
-  
-                </div>
-              </div>
-              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                <i class="icon-lg mdi mdi-arrange-send-backward text-primary ms-auto"></i>
-              </div>
-            </div>
-  
-          </div>
-        </a>
-      </div>
-    </div>
-
-
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
-      <div class="card">
-        <a href="{% url 'ad_work_progress'%}" class="text-decoration-none text-white ">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                <div class="d-flex d-sm-block d-md-flex align-items-center">
-                  
-                      <h4 class="mb-0" style="color:white;"> Work Progress</h4>
+                      <h4 class="mb-0" style="color:white;">Weekly Report</h4>
   
                 </div>
               </div>
@@ -134,13 +89,26 @@
 
     <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card">
-        <a href="{% url 'work_shedule_exe'%}" class="text-decoration-none text-white ">
+        <a href="{% url 'corrections'%}" class="text-decoration-none text-white ">
           <div class="card-body">
             <div class="row">
               <div class="col-8 col-sm-12 col-xl-8 my-auto">
                 <div class="d-flex d-sm-block d-md-flex align-items-center">
                   
-                      <h4 class="mb-0" style="color:white;">Work Schedule</h4>
+                      <h4 class="mb-0" style="color:white;">Corrections</h4>
+                     
+                      {% if cor.date == dt %}
+                      
+                      <script src="https://cdn.lordicon.com/ritcuqlt.js"></script>
+                      <lord-icon
+                        src="https://cdn.lordicon.com/psnhyobz.json"
+                        trigger="hover"
+                        colors="primary:#c71f16"
+                        style="width:60px; height: 60px;">
+                      </lord-icon>
+                      {%else%}
+                     
+                      {%endif%}
   
                 </div>
               </div>
@@ -152,53 +120,7 @@
           </div>
         </a>
       </div>
-    </div>
-
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
-      <div class="card">
-        <a href="{% url 'ad_exe_smopost'%}" class="text-decoration-none text-white ">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                <div class="d-flex d-sm-block d-md-flex align-items-center">
-                  
-                      <h4 class="mb-0" style="color:white;">Smo Post</h4>
-  
-                </div>
-              </div>
-              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                <i class="icon-lg mdi mdi-arrange-send-backward text-primary ms-auto"></i>
-              </div>
-            </div>
-  
-          </div>
-        </a>
-      </div>
-    </div>
-
-<!-- -----------------------------------------------------my sections -->
-
-    <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
-      <div class="card">
-        <a href="{% url 'assigned_persons' %}" class="text-decoration-none text-white ">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-8 col-sm-12 col-xl-8 my-auto">
-                <div class="d-flex d-sm-block d-md-flex align-items-center">
-                  
-                      <h4 class="mb-0" style="color:white;">Assigned Persons</h4>
-  
-                </div>
-              </div>
-              <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                <i class="icon-lg mdi mdi-arrange-send-backward text-primary ms-auto"></i>
-              </div>
-            </div>
-  
-          </div>
-        </a>
-      </div>
-    </div>
+    </div> -->
 
     <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
       <div class="card">
@@ -243,7 +165,9 @@
         </a>
       </div>
     </div>
-</div> 
+
+
+</div>
 
 
 

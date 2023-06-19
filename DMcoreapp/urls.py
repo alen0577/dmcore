@@ -136,6 +136,9 @@ urlpatterns = [
 
     # ---------------------------------------------------------------------------- data manager section
 
+    path('assigned_persons/',views.assigned_persons, name='assigned_persons'),
+    path('assigned_person_details/',views.assigned_person_details, name='assigned_person_details'),
+
 
 
 
@@ -143,6 +146,20 @@ urlpatterns = [
 
 
     # ---------------------------------------------------------------------------- tele caller  section
+
+    path('tc_profile', views.tc_profile, name='tc_profile'),
+    path('tc_dashboard', views.tc_dashboard, name='tc_dashboard'),
+    path('tc_view_leads', views.tc_view_leads, name='tc_view_leads'),
+    path('tc_view_current_leads', views.tc_view_current_leads, name='tc_view_current_leads'),
+    path('tc_view_previous_leads', views.tc_view_previous_leads, name='tc_view_previous_leads'),
+    # path('update_status', views.update_status, name='update_status'),
+
+    path('tc_accountset', views.tc_accountset, name='tc_accountset'),
+
+
+
+    path('followup/',views.followup,name='followup'),
+    path('closed/',views.closed,name='closed'),
 
 
 

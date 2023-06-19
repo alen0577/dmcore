@@ -79,6 +79,13 @@ def signin(request):
             request.session['userid'] = member.id
 
             return redirect('ex_profile')
+
+        elif user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],department="TeleCaller",status="active").exists():
+            member = user_registration.objects.get(email=request.POST['email'],password=request.POST['password'])
+            request.session['userid'] = member.id
+
+            return redirect('tc_profile')
+
         else:
            
             return redirect('login')
@@ -2895,6 +2902,26 @@ def remove(request):
 
 # ------ for data manager module------
 
+def assigned_persons(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    
+    context={
+        "usr":usr,       
+
+    }
+    return render(request,'data manager/dm_assigned_persons.html', context)
+
+
+def assigned_person_details(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    
+    context={
+        "usr":usr,       
+
+    }
+    return render(request,'data manager/dm_assigned-person_det.html', context)    
 
 
 
@@ -2902,6 +2929,111 @@ def remove(request):
 
 
 
-# ------ for telecaller module-------
+# ----------------------------------------------------------------------------------------------------TeleCaller
 
+def tc_base(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    context={
+        "usr":usr,
+    }
+    return render(request, 'telecaller/tc_base.html',context)
+
+def tc_profile(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    context={
+        "usr":usr,
+    }
+    return render(request, 'telecaller/tc_profile.html',context)
+
+def tc_dashboard(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    cor=correction.objects.filter(executive=ids).order_by('id').last()
+    
+    dt=date.today()
+    context={
+        "usr":usr,
+        "cor":cor,
+        "dt":dt
+    }
+    return render(request, 'telecaller/tc_dashboard.html',context)
+
+def tc_accountset(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    if request.session.has_key('userid'):
+        callerid = request.session['userid']
+    else:
+        return redirect('/')
+    caller = user_registration.objects.filter(id=callerid)
+    return render(request, 'telecaller/tc_accountset.html', {'caller': caller,"usr":usr})
+
+def tc_view_leads(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    if request.session.has_key('userid'):
+        callerid = request.session['userid']
+    else:
+        return redirect('/')
+    caller = user_registration.objects.filter(id=callerid)
+    return render(request, 'telecaller/tc_view_leads.html', {'caller': caller,"usr":usr})
+
+def tc_view_current_leads(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    if request.session.has_key('userid'):
+        callerid = request.session['userid']
+    else:
+        return redirect('/')
+    caller = user_registration.objects.get(id=callerid)
+    # cur_leads = All_leads.objects.filter(telecaller_id=ids,assign_dt=date.today(),followup_dt=date.today())
+    print('hi')
+    # for i in cur_leads:
+    #     print(i)
+
+    return render(request, 'telecaller/tc_view_current_leads.html', {'caller': caller,"usr":usr,})
+
+def tc_view_previous_leads(request):
+    ids=request.session['userid']
+    print(ids)
+    usr = user_registration.objects.get(id=ids)
+    if request.session.has_key('userid'):
+        callerid = request.session['userid']
+    else:
+        return redirect('/')
+    caller = user_registration.objects.get(id=callerid)
+    print(callerid)
+    pre_leads = All_leads.objects.filter(telecaller_id=ids, followup_dt__lt=date.today())
+    
+    for i in pre_leads:
+        print(i)
+    return render(request, 'telecaller/tc_view_previous_leads.html', {'caller': caller,"usr":usr,'pre_leads':pre_leads})
+
+
+
+
+
+
+def followup(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    
+    context={
+        "usr":usr,       
+
+    }
+    return render(request,'telecaller/tc_followup.html',context)
+    
+
+def closed(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    
+    context={
+        "usr":usr,       
+
+    }
+    return render(request,'telecaller/tc_closed.html',context)    
 
