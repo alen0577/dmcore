@@ -462,41 +462,43 @@ class addi_events(models.Model):
     file =models.ImageField(upload_to='images/smo_post/', null=True, blank=True)
 
 
-    # ---------------------------------------------------------------------------- Leads data
-    class All_leads(models.Model):
-        date=models.DateField(null=True,blank=True)
-        name = models.CharField(max_length=255,null=True,blank=True,default='')
-        email_id = models.CharField(max_length=255,null=True,blank=True,default='')
-        ph_no = models.CharField(max_length=255,null=True,blank=True,default='')
-        location = models.CharField(max_length=255,null=True,blank=True,default='')
-        qualification = models.CharField(max_length=255,null=True,blank=True,default='')
-        year_of_passout = models.CharField(max_length=255,null=True,blank=True,default='')
-        collegename = models.CharField(max_length=255,null=True,blank=True,default='')
-        internship = models.CharField(max_length=255,null=True,blank=True,default='')
-        internship_institute = models.CharField(max_length=255,null=True,blank=True,default='')
-        internship_topic = models.CharField(max_length=255,null=True,blank=True,default='')
-        internship_start = models.DateField(null=True,blank=True)
-        internship_end  = models.DateField(null=True,blank=True)
-        duration = models.CharField(max_length=255,null=True,blank=True,default='')
-        fresher_experience = models.CharField(max_length=255,null=True,blank=True,default='')
-        previous_experience = models.CharField(max_length=255,null=True,blank=True,default='')
-        company_name = models.CharField(max_length=255,null=True,blank=True,default='')
-        register = models.CharField(max_length=255,null=True,blank=True,default='')
-        status =models.CharField(max_length=255,null=True,blank=True,default='')
-        followup_dt =models.DateField(null=True,blank=True)
-        assign_status=models.CharField(max_length=255,null=True,blank=True,default='')
-        assign_dt =models.DateField(null=True,blank=True)
-        executive=models.ForeignKey(user_registration, on_delete=models.CASCADE, null=True, blank=True)
+# ---------------------------------------------------------------------------- Leads data
+
+class All_leads(models.Model):
+    
+    date=models.DateField(null=True,blank=True)
+    name = models.CharField(max_length=255,null=True,blank=True,default='')
+    email_id = models.CharField(max_length=255,null=True,blank=True,default='')
+    ph_no = models.CharField(max_length=255,null=True,blank=True,default='')
+    location = models.CharField(max_length=255,null=True,blank=True,default='')
+    qualification = models.CharField(max_length=255,null=True,blank=True,default='')
+    year_of_passout = models.CharField(max_length=255,null=True,blank=True,default='')
+    collegename = models.CharField(max_length=255,null=True,blank=True,default='')
+    internship = models.CharField(max_length=255,null=True,blank=True,default='')
+    internship_institute = models.CharField(max_length=255,null=True,blank=True,default='')
+    internship_topic = models.CharField(max_length=255,null=True,blank=True,default='')
+    internship_start = models.DateField(null=True,blank=True)
+    internship_end  = models.DateField(null=True,blank=True)
+    duration = models.CharField(max_length=255,null=True,blank=True,default='')
+    fresher_experience = models.CharField(max_length=255,null=True,blank=True,default='')
+    previous_experience = models.CharField(max_length=255,null=True,blank=True,default='')
+    company_name = models.CharField(max_length=255,null=True,blank=True,default='')
+    register = models.CharField(max_length=255,null=True,blank=True,default='')
+    status =models.CharField(max_length=255,null=True,blank=True,default='')
+    followup_dt =models.DateField(null=True,blank=True)
+    assign_status=models.CharField(max_length=255,null=True,blank=True,default='')
+    assign_dt =models.DateField(null=True,blank=True)
+    executive=models.ForeignKey(user_registration, on_delete=models.CASCADE, null=True, blank=True)
+    telecaller_id = models.IntegerField(null=True,blank=True)
+    data_manager_id = models.IntegerField(null=True,blank=True)
+    
+# ---------------------------------------------------------------------------- data manager models
+
 
     
 
-    # ---------------------------------------------------------------------------- data manager models
-
-
-    
 
 
 
 
-
-    # ---------------------------------------------------------------------------- tele caller models
+# ---------------------------------------------------------------------------- tele caller models

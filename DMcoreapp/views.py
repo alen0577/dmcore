@@ -80,6 +80,12 @@ def signin(request):
 
             return redirect('ex_profile')
 
+        elif user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],department="Data Manager",status="active").exists():
+            member = user_registration.objects.get(email=request.POST['email'],password=request.POST['password'])
+            request.session['userid'] = member.id
+
+            return redirect('dm_profile')    
+
         elif user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],department="TeleCaller",status="active").exists():
             member = user_registration.objects.get(email=request.POST['email'],password=request.POST['password'])
             request.session['userid'] = member.id
@@ -2900,7 +2906,35 @@ def remove(request):
     return JsonResponse(data)
 
 
-# ------ for data manager module------
+# ----------------------------------------------------------------------------------------------------Data Manager
+
+
+def dm_base(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    context={
+        "usr":usr,
+    }
+    return render(request, 'dm_manager/dm_base.html',context)
+
+def dm_profile(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    context={
+        "usr":usr,
+    }
+    return render(request, 'dm_manager/dm_profile.html',context )
+
+def dm_dashboard(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    context={
+        "usr":usr,
+    }
+    return render(request, 'dm_manager/dm_dashboard.html',context)
+
+
+
 
 def assigned_persons(request):
     ids=request.session['userid']
@@ -2910,7 +2944,7 @@ def assigned_persons(request):
         "usr":usr,       
 
     }
-    return render(request,'data manager/dm_assigned_persons.html', context)
+    return render(request,'dm_manager/dm_assigned_persons.html', context)
 
 
 def assigned_person_details(request):
@@ -2921,7 +2955,7 @@ def assigned_person_details(request):
         "usr":usr,       
 
     }
-    return render(request,'data manager/dm_assigned-person_det.html', context)    
+    return render(request,'dm_manager/dm_assigned-person_det.html', context)    
 
 
 
@@ -3016,24 +3050,57 @@ def tc_view_previous_leads(request):
 
 
 
-def followup(request):
+def tc_followup(request):
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
+    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Call you back','Will contact after enquiry']
+    followup=All_leads.objects.filter(status__in=status_values)
     
     context={
-        "usr":usr,       
+        "usr":usr, 
+        'followup':followup,      
 
     }
     return render(request,'telecaller/tc_followup.html',context)
     
 
-def closed(request):
+def tc_closed(request):
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    
+    status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable']
+    closed=All_leads.objects.filter(status__in=status_values)
     context={
-        "usr":usr,       
+        "usr":usr, 
+        'closed':closed,      
 
     }
     return render(request,'telecaller/tc_closed.html',context)    
 
+def tc_flt_day_closed(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    day_field=int(request.POST.get('day'))
+    
+    status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable']
+    closed=All_leads.objects.filter(status__in=status_values,date__day=(day_field))
+
+    
+    context={
+        "usr":usr,
+        'closed':closed,
+    }
+    return render(request, 'telecaller/tc_closed.html',context)
+
+def tc_flt_month_closed(request):
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    st_mt=request.POST.get('str_month')
+    en_mt=request.POST.get('end_month')
+    
+    # pr_work=progress_report.objects.filter(start_date__gte=st_dt,start_date__lte=en_dt)
+    context={
+        "usr":usr,
+        # "pr_work":pr_work
+
+    }
+    return render(request, 'telecaller/tc_closed.html',context)

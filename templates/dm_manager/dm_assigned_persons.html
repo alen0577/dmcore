@@ -1,10 +1,10 @@
-{%extends 'data manager/dm_base.html'%}
+{%extends 'dm_manager/dm_base.html'%}
 {%load static%}
 {%block content%}
 
 
 <div class="row pt-3" style="background-color: black;">
-  <div class="" style="font-size: 20px;font-weight: 600;color:#6C7293;">Details</div>
+  <div class="" style="font-size: 20px;font-weight: 600;color:#6C7293;">Assigned Persons</div>
 </div>
 <div class="row mt-4">
   <div class="card">
@@ -14,10 +14,10 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col" style="color:#6C7293;">Name</th>
+              <th scope="col" style="color:#6C7293;">Telecaller Name</th>
               <th scope="col" style="color:#6C7293;">Date</th>
               <th scope="col" style="color:#6C7293;">Count</th>
-              
+              <th scope="col" style="color:#6C7293;">View Details</th>
               
             </tr>
           </thead>
@@ -32,7 +32,11 @@
                 <td style="color:white;">100</td>
             
 
-                
+                <td class="text-primary">
+                  <a href="{% url 'assigned_person_details' %}" style="text-decoration: none;">
+                    <div class="badge badge-outline-info">View Details</div>
+                  </a>
+                </td>
               
               </tr>
               

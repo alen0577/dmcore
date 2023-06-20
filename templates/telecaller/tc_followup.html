@@ -15,9 +15,10 @@
           <thead>
             <tr>
               <th scope="col" style="color:#6C7293;">Name</th>
-              <th scope="col" style="color:#6C7293;">Date</th>
+              <th scope="col" style="color:#6C7293;">Followup Date</th>
               <th scope="col" style="color:#6C7293;">Contact</th>
               <th scope="col" style="color:#6C7293;">Email</th>
+              <th scope="col" style="color:#6C7293;">Status</th>
               
               
             </tr>
@@ -25,19 +26,20 @@
           <tbody id="myTable">
 
             
-              
+              {% for i in followup %}
               <tr>
                 
-                <td style="color:white;">Alen Antony</td>
-                <td style="color:white;">19/06/2023</td>
-                <td style="color:white;">7894561233</td>
-                <td style="color:white;">alenantony32@gmail.com</td>
+                <td style="color:white;">{{i.name}}</td>
+                <td style="color:white;">{{i.followup_dt}}</td>
+                <td style="color:white;">{{i.ph_no}}</td>
+                <td style="color:white;">{{i.email_id}}</td>
+                <td style="color:white;">{{i.status}}</td>
             
 
                
               
               </tr>
-              
+              {% endfor %}
           </tbody>
         </table>
       </div>
