@@ -2953,7 +2953,7 @@ def assigned_persons(request):
         return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    assign=All_leads.objects.filter(data_manager_id=ids).values('telecaller_id','date').distinct().annotate(count=Count('telecaller_id')).order_by('-date')
+    assign=All_leads.objects.filter(data_manager_id=ids).values('telecaller_id','assign_dt').distinct().annotate(count=Count('telecaller_id')).order_by('-assign_dt')
     telecaller=user_registration.objects.filter(department='Telecaller')
     print(assign)
     context={
@@ -2972,7 +2972,7 @@ def assigned_person_details(request,id,pk):
         return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    assign=All_leads.objects.filter(telecaller_id=id,assign_dt=pk).order_by('-assign_dt')
+    assign=All_leads.objects.filter(data_manager_id=ids,telecaller_id=id,assign_dt=pk).order_by('-assign_dt')
     print(assign)
     context={
         "usr":usr,
@@ -3060,8 +3060,8 @@ def tc_followup(request):
         return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Call you back','Will contact after enquiry','Will contact if interested','Follow up']
-    followup=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('date')
+    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Will contact after enquiry','Will contact if interested','Follow up']
+    followup=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('-followup_dt')
     
     context={
         "usr":usr, 
@@ -3081,7 +3081,7 @@ def tc_close(request):
     today = date.today()
 
     status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
-    count=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,date=today).count()
+    count=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,assign_dt=today).count()
 
     context={
         "usr":usr,
@@ -3100,7 +3100,7 @@ def tc_closed(request):
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
     status_values=['Closed']
-    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('-date')
+    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('-assign_dt')
     context={
         "usr":usr, 
         'closed':closed,      
@@ -3120,7 +3120,7 @@ def tc_flt_day_closed(request):
     # status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
     status_values=['Closed']
 
-    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,date=day_field).order_by('-date')
+    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,assign_dt=day_field).order_by('-assign_dt')
 
     
     context={
@@ -3145,7 +3145,7 @@ def tc_flt_month_closed(request):
     # status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
     status_values=['Closed']
 
-    closed=All_leads.objects.filter(Q(date__year=selected_year_number) & Q(date__month=selected_month_number) & Q(status__in=status_values),telecaller_id=ids, ).order_by('-date')
+    closed=All_leads.objects.filter(Q(assign_dt__year=selected_year_number) & Q(assign_dt__month=selected_month_number) & Q(status__in=status_values),telecaller_id=ids, ).order_by('-assign_dt')
 
     
     

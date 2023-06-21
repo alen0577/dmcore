@@ -31,13 +31,13 @@
                 
                   
                   {% if  i.telecaller_id == j.id %}
-                  <td style="color:white;">{{i.date}}</td>
+                  <td style="color:white;">{{i.assign_dt}}</td>
                   <td style="color:white;">{{j.fullname}}</td>
                   <td style="color:white;">{{i.count}}</td>
             
            
                   <td class="text-primary">
-                    <a href="{% url 'assigned_person_details' j.id i.date %}" style="text-decoration: none;">
+                    <a href="{% url 'assigned_person_details' j.id  i.assign_dt %}" style="text-decoration: none;">
                       <div class="badge badge-outline-info">View Details</div>
                     </a>
                   </td>
