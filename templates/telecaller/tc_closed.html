@@ -4,14 +4,14 @@
 
 
 <div class="row pt-3" style="background-color: black;">
-  <div class="" style="font-size: 20px;font-weight: 600;color:#6C7293;">Closed</div>
+  <div class="" style="font-size: 20px;font-weight: 600;color:#6C7293;">CLOSED</div>
 </div>
-<div class="row mt-4">
+<div class="row mt-5">
   <div class="card">
     <div class="card-body">
      
       <div style="text-align: right;">
-        <a href="" data-toggle="modal" data-target="#flt_day"style="text-decoration: none;"><button type="submit" name="submit" id="alert2" class="btn-primary Search" >Filter By Date</button></a>
+        <a href="" data-toggle="modal" data-target="#flt_day"style="text-decoration: none;"><button type="submit" name="submit" id="alert2" class="btn-primary Search" >Filter By Day</button></a>
         <a href="" data-toggle="modal" data-target="#flt_month"style="text-decoration: none;"><button type="submit" name="submit" id="alert3" class="btn-primary Search" >Filter By Month</button></a>
         <br><br>
       </div>
@@ -21,10 +21,10 @@
           <thead>
             <tr>
               <th scope="col" style="color:#6C7293;">Name</th>
-              <th scope="col" style="color:#6C7293;">Closed Date</th>
+              <th scope="col" style="color:#6C7293;">Date</th>
               <th scope="col" style="color:#6C7293;">Contact</th>
               <th scope="col" style="color:#6C7293;">Email</th>
-              <th scope="col" style="color:#6C7293;">Status</th>
+              
               
               
             </tr>
@@ -38,7 +38,7 @@
                 <td style="color:white;">{{i.date}}</td>
                 <td style="color:white;">{{i.ph_no}}</td>
                 <td style="color:white;">{{i.email_id}}</td>
-                <td style="color:white;">{{i.status}}</td>
+                
             
 
              
@@ -72,7 +72,7 @@
                 
                 <div class="col-md-12 ">
                     <div>
-                        <label for="">Day</label>
+                        <label for="">Select Day</label>
                     </div>
                     <div>
                     <input type="date" name="day" class="drop form-control ml-3 mt-2 text-light" style="border:1px solid #6C7293 ;height:70px;" required >
@@ -126,17 +126,17 @@
 
             <div class="row mt-5">
               
-              <div class="col-md-6 ">
+              <div class="col-md-12 ">
                   <div>
-                      <label for="">Start Month</label>
+                      <label for="">Select Month</label>
                   </div>
                   <div>
-                  <input type="month" name="str_month" class="drop form-control ml-3 mt-2 text-light" style="border:1px solid #6C7293 ;height:70px;" required >
+                  <input type="month" name="month" class="drop form-control ml-3 mt-2 text-light" style="border:1px solid #6C7293 ;height:70px;" required >
                   </div>
 
     
               </div>
-              <div class="col-md-6 ">
+              <!-- <div class="col-md-6 ">
                   <div>
                       <label for=""> End Month</label>
                   </div>
@@ -145,7 +145,7 @@
                   </div>
 
     
-              </div>
+              </div> -->
 
             </div>
 

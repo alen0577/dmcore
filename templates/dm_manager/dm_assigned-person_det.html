@@ -14,11 +14,12 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col" style="color:#6C7293;">Telecaller Name</th>
+              
               <th scope="col" style="color:#6C7293;">Date</th>
-              <th scope="col" style="color:#6C7293;">Count</th>
-              <th scope="col" style="color:#6C7293;">Mail</th>
-              <th scope="col" style="color:#6C7293;">Phone</th>
+              <th scope="col" style="color:#6C7293;">Name</th>
+              <th scope="col" style="color:#6C7293;">Mail Id</th>
+              <th scope="col" style="color:#6C7293;">Phone Number</th>
+              <th scope="col" style="color:#6C7293;">Status</th>
               
               
             </tr>
@@ -26,20 +27,20 @@
           <tbody id="myTable">
 
             
-              
+              {% for i in assign %}
               <tr>
                 
-                <td style="color:white;">Alen Antony</td>
-                <td style="color:white;">19/06/23</td>
-                <td style="color:white;">100</td>
-                <td style="color:white;">alen@gmail.com</td>
-                <td style="color:white;">8794561233</td>
+                <td style="color:white;">{{i.assign_dt}}</td>
+                <td style="color:white;">{{i.name}}</td>
+                <td style="color:white;">{{i.email_id}}</td>
+                <td style="color:white;">{{i.ph_no}}</td>
+                <td style="color:white;">{{i.status}}</td>
             
 
                 
               
               </tr>
-              
+              {% endfor %}
           </tbody>
         </table>
       </div>

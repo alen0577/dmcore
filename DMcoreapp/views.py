@@ -45,6 +45,7 @@ from django.http import HttpResponseRedirect
 from datetime import datetime, time, timedelta
 from django.db.models.functions import TruncHour
 from datetime import time
+from django.db.models import Count
 
 from datetime import datetime, timedelta, time
 #----------------------------------------------------------Login, Sign Up, Reset, Internshipform 
@@ -2910,6 +2911,7 @@ def remove(request):
 
 
 def dm_base(request):
+    
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
     context={
@@ -2918,6 +2920,10 @@ def dm_base(request):
     return render(request, 'dm_manager/dm_base.html',context)
 
 def dm_profile(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
     context={
@@ -2925,34 +2931,53 @@ def dm_profile(request):
     }
     return render(request, 'dm_manager/dm_profile.html',context )
 
-def dm_dashboard(request):
+def dm_assigned_person(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
     context={
         "usr":usr,
     }
-    return render(request, 'dm_manager/dm_dashboard.html',context)
+    return render(request, 'dm_manager/dm_assigned_person.html',context)
 
 
 
 
 def assigned_persons(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    
+    assign=All_leads.objects.filter(data_manager_id=ids).values('telecaller_id','date').distinct().annotate(count=Count('telecaller_id')).order_by('-date')
+    telecaller=user_registration.objects.filter(department='Telecaller')
+    print(assign)
     context={
-        "usr":usr,       
+        "usr":usr,
+        'assign':assign,
+        'telecaller':telecaller,       
 
     }
     return render(request,'dm_manager/dm_assigned_persons.html', context)
 
 
-def assigned_person_details(request):
+def assigned_person_details(request,id,pk):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    
+    assign=All_leads.objects.filter(telecaller_id=id,assign_dt=pk).order_by('-assign_dt')
+    print(assign)
     context={
-        "usr":usr,       
+        "usr":usr,
+        'assign':assign
+
 
     }
     return render(request,'dm_manager/dm_assigned-person_det.html', context)    
@@ -3004,57 +3029,39 @@ def tc_accountset(request):
     caller = user_registration.objects.filter(id=callerid)
     return render(request, 'telecaller/tc_accountset.html', {'caller': caller,"usr":usr})
 
-def tc_view_leads(request):
-    ids=request.session['userid']
-    usr = user_registration.objects.get(id=ids)
+
+def tc_follow(request):
     if request.session.has_key('userid'):
-        callerid = request.session['userid']
+        ids = request.session['userid']
     else:
         return redirect('/')
-    caller = user_registration.objects.filter(id=callerid)
-    return render(request, 'telecaller/tc_view_leads.html', {'caller': caller,"usr":usr})
-
-def tc_view_current_leads(request):
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    if request.session.has_key('userid'):
-        callerid = request.session['userid']
-    else:
-        return redirect('/')
-    caller = user_registration.objects.get(id=callerid)
-    # cur_leads = All_leads.objects.filter(telecaller_id=ids,assign_dt=date.today(),followup_dt=date.today())
-    print('hi')
-    # for i in cur_leads:
-    #     print(i)
-
-    return render(request, 'telecaller/tc_view_current_leads.html', {'caller': caller,"usr":usr,})
-
-def tc_view_previous_leads(request):
-    ids=request.session['userid']
-    print(ids)
-    usr = user_registration.objects.get(id=ids)
-    if request.session.has_key('userid'):
-        callerid = request.session['userid']
-    else:
-        return redirect('/')
-    caller = user_registration.objects.get(id=callerid)
-    print(callerid)
-    pre_leads = All_leads.objects.filter(telecaller_id=ids, followup_dt__lt=date.today())
-    
-    for i in pre_leads:
-        print(i)
-    return render(request, 'telecaller/tc_view_previous_leads.html', {'caller': caller,"usr":usr,'pre_leads':pre_leads})
+    today = date.today()
+    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Call you back','Will contact after enquiry','Will contact if interested','Follow up']
+    count=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,followup_dt=today).count()
 
 
+    context={
+        "usr":usr,
+        'count' :count
+             
 
+    }
+
+    return render(request,'telecaller/tc_follow.html',context)
 
 
 
 def tc_followup(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Call you back','Will contact after enquiry']
-    followup=All_leads.objects.filter(status__in=status_values)
+    status_values=['Will inform','Interested','Want to visit office', 'Please send details through WhatsApp','Join later','Call you back','Will contact after enquiry','Will contact if interested','Follow up']
+    followup=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('date')
     
     context={
         "usr":usr, 
@@ -3062,13 +3069,38 @@ def tc_followup(request):
 
     }
     return render(request,'telecaller/tc_followup.html',context)
-    
 
-def tc_closed(request):
+
+def tc_close(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable']
-    closed=All_leads.objects.filter(status__in=status_values)
+    today = date.today()
+
+    status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
+    count=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,date=today).count()
+
+    context={
+        "usr":usr,
+        'count':count, 
+            
+
+    }
+    return render(request,'telecaller/tc_close.html',context)
+
+
+def tc_closed(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
+    ids=request.session['userid']
+    usr = user_registration.objects.get(id=ids)
+    status_values=['Closed']
+    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values).order_by('-date')
     context={
         "usr":usr, 
         'closed':closed,      
@@ -3077,12 +3109,18 @@ def tc_closed(request):
     return render(request,'telecaller/tc_closed.html',context)    
 
 def tc_flt_day_closed(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    day_field=int(request.POST.get('day'))
+    day_field=request.POST.get('day')
     
-    status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable']
-    closed=All_leads.objects.filter(status__in=status_values,date__day=(day_field))
+    # status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
+    status_values=['Closed']
+
+    closed=All_leads.objects.filter(telecaller_id=ids,status__in=status_values,date=day_field).order_by('-date')
 
     
     context={
@@ -3092,15 +3130,30 @@ def tc_flt_day_closed(request):
     return render(request, 'telecaller/tc_closed.html',context)
 
 def tc_flt_month_closed(request):
+    if request.session.has_key('userid'):
+        ids = request.session['userid']
+    else:
+        return redirect('/')
     ids=request.session['userid']
     usr = user_registration.objects.get(id=ids)
-    st_mt=request.POST.get('str_month')
-    en_mt=request.POST.get('end_month')
+    month_field=request.POST.get('month')
+    selected_month_date = datetime.strptime(month_field, '%Y-%m')
+
+    selected_month_number = selected_month_date.month
+    selected_year_number = selected_month_date.year
+
+    # status_values=['Not interested','Already contacted', 'Already joined in Altos','Already joined for another training', 'Not interested for payment','Recently join the job','Already done another internship recently','looking for direct job','payment is not affordable','Payment issue','Closed','Rejected']
+    status_values=['Closed']
+
+    closed=All_leads.objects.filter(Q(date__year=selected_year_number) & Q(date__month=selected_month_number) & Q(status__in=status_values),telecaller_id=ids, ).order_by('-date')
+
     
-    # pr_work=progress_report.objects.filter(start_date__gte=st_dt,start_date__lte=en_dt)
+    
+    
     context={
         "usr":usr,
-        # "pr_work":pr_work
+        'closed':closed
+       
 
     }
     return render(request, 'telecaller/tc_closed.html',context)

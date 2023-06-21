@@ -489,12 +489,15 @@ class All_leads(models.Model):
     assign_status=models.CharField(max_length=255,null=True,blank=True,default='')
     assign_dt =models.DateField(null=True,blank=True)
     executive=models.ForeignKey(user_registration, on_delete=models.CASCADE, null=True, blank=True)
+    ex_duration = models.CharField(max_length=255,null=True,blank=True,default='')
     telecaller_id = models.IntegerField(null=True,blank=True)
     data_manager_id = models.IntegerField(null=True,blank=True)
     
 # ---------------------------------------------------------------------------- data manager models
 
-
+class Lead_assign(models.Model):
+    telecaller = models.CharField(max_length=255, null=True, blank=True)
+    checkbox = models.ForeignKey(All_leads, on_delete=models.CASCADE, null=True, blank=True)
     
 
 
